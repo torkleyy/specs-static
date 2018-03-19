@@ -1,0 +1,10 @@
+[package]
+name = "specs-static"
+version = "0.1.0"
+authors = ["torkleyy <torkleyy@gmail.com>"]
+
+[dependencies]
+derivative = "1"
+hibitset = "0.3"
+shred = "0.5"
+specs = "0.10"
