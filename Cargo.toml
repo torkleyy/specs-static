@@ -1,6 +1,6 @@
 [package]
 name = "specs-static"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["torkleyy <torkleyy@gmail.com>"]
 description = """
 specs-static is an extension for Specs that adds custom ids.
