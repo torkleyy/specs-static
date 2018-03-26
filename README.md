@@ -2,18 +2,18 @@
 
 [![Build Status][bi]][bl] [![Crates.io][ci]][cl] ![MIT/Apache][li] [![Docs.rs][di]][dl] ![LoC][lo]
 
-[bi]: https://travis-ci.org/slide-rs/shred.svg?branch=master
-[bl]: https://travis-ci.org/slide-rs/shred
+[bi]: https://travis-ci.org/torkleyy/specs-static.svg?branch=master
+[bl]: https://travis-ci.org/torkleyy/specs-static
 
-[ci]: https://img.shields.io/crates/v/shred.svg
-[cl]: https://crates.io/crates/shred/
+[ci]: https://img.shields.io/crates/v/specs-static.svg
+[cl]: https://crates.io/crates/specs-static/
 
 [li]: https://img.shields.io/badge/license-MIT%2FApache-blue.svg
 
-[di]: https://docs.rs/shred/badge.svg
-[dl]: https://docs.rs/shred/
+[di]: https://docs.rs/specs-static/badge.svg
+[dl]: https://docs.rs/specs-static/
 
-[lo]: https://tokei.rs/b1/github/slide-rs/shred?category=code
+[lo]: https://tokei.rs/b1/github/torkleyy/specs-static?category=code
 
 An experimental extension for [Specs](https://github.com/slide-rs/specs).
 This adds component storages that are not indexed by `Entity`, but by custom ids that
