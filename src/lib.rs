@@ -26,10 +26,13 @@ use specs::{Component, Index, Join, UnprotectedStorage, World};
 /// # Examples
 ///
 /// ```
+/// use specs_static::Id;
+///
+/// #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 /// pub struct MyAmazingId(pub u32);
 ///
 /// impl Id for MyAmazingId {
-///     fn from_u32(value: u32) {
+///     fn from_u32(value: u32) -> Self {
 ///         MyAmazingId(value)
 ///     }
 ///
