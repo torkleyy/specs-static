@@ -18,7 +18,10 @@ use std::hash::Hash;
 use std::marker::PhantomData;
 
 use hibitset::BitSet;
-use specs::{Component, Index, Join, UnprotectedStorage, World};
+use specs::storage::UnprotectedStorage;
+use specs::{Component, Join, World};
+
+type Index = u32;
 
 /// The ids component storages are indexed with. This is mostly just a newtype wrapper with a `u32`
 /// in it.
@@ -120,10 +123,8 @@ where
     D: UnprotectedStorage<C>,
 {
     fn drop(&mut self) {
-        let bitset = &self.bitset;
-
         unsafe {
-            self.data.clean(|x| bitset.contains(x));
+            self.data.clean(&self.bitset);
         }
     }
 }
@@ -169,11 +170,22 @@ where
 /// An extension trait for registering statically managed component storages.
 pub trait WorldExt {
     /// Registers a `specs_static::Storage` for the components of type `C`.
-    fn register_tile_comp<C: Component + Send + Sync, I: Id>(&mut self);
+    /// This will be done automatically if your storage has a `Default` and you're fetching it with
+    /// `Read` / `Write`.
+    fn register_tile_comp<C, I>(&mut self)
+    where
+        C: Component + Send + Sync,
+        C::Storage: Default,
+        I: Id;
 }
 
 impl WorldExt for World {
-    fn register_tile_comp<C: Component + Send + Sync, I: Id>(&mut self) {
+    fn register_tile_comp<C, I>(&mut self)
+    where
+        C: Component + Send + Sync,
+        C::Storage: Default,
+        I: Id,
+    {
         self.add_resource(Storage::<C, C::Storage, I>::default());
     }
 }

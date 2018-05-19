@@ -1,8 +1,9 @@
 extern crate specs;
 extern crate specs_static;
 
-use specs::{Component, DispatcherBuilder, Fetch, FetchMut, Join, System, SystemData, VecStorage,
-            World};
+use specs::{
+    Component, DispatcherBuilder, ReadExpect, Read, Write, Join, System, SystemData, VecStorage, World,
+};
 use specs_static::{Id, Storage, WorldExt};
 
 pub struct Tiles {
@@ -24,8 +25,8 @@ impl Tiles {
     }
 }
 
-pub type TileComps<'a, C: Component> = Fetch<'a, Storage<C, C::Storage, TileId>>;
-pub type TileCompsMut<'a, C: Component> = FetchMut<'a, Storage<C, C::Storage, TileId>>;
+pub type TileComps<'a, C> = Read<'a, Storage<C, <C as Component>::Storage, TileId>>;
+pub type TileCompsMut<'a, C> = Write<'a, Storage<C, <C as Component>::Storage, TileId>>;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct TileId(u32);
@@ -56,7 +57,7 @@ impl Component for Material {
 struct Sys;
 
 impl<'a> System<'a> for Sys {
-    type SystemData = (Fetch<'a, Tiles>, TileComps<'a, Material>);
+    type SystemData = (ReadExpect<'a, Tiles>, TileComps<'a, Material>);
 
     fn run(&mut self, (tiles, materials): Self::SystemData) {
         if let Some(mat) = materials.get(tiles.id(3, 4)) {
@@ -76,7 +77,7 @@ impl<'a> System<'a> for Sys {
 }
 
 fn main() {
-    let mut d = DispatcherBuilder::new().add(Sys, "sys", &[]).build();
+    let mut d = DispatcherBuilder::new().with(Sys, "sys", &[]).build();
     let mut w = World::new();
 
     // Use method provided by `WorldExt`.
@@ -87,7 +88,7 @@ fn main() {
 
     {
         let tiles = w.read_resource::<Tiles>();
-        let mut materials: TileCompsMut<Material> = SystemData::fetch(&w.res, 0);
+        let mut materials: TileCompsMut<Material> = SystemData::fetch(&w.res);
 
         for tile_id in tiles.iter_all() {
             materials.insert(tile_id, Material::Dirt);

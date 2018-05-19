@@ -1,6 +1,6 @@
 [package]
 name = "specs-static"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["torkleyy <torkleyy@gmail.com>"]
 description = """
 specs-static is an extension for Specs that adds custom ids.
@@ -18,6 +18,6 @@ travis-ci = { repository = "torkleyy/specs-static" }
 
 [dependencies]
 derivative = "1"
-hibitset = "0.3"
-shred = "0.5"
-specs = "0.10"
+hibitset = "0.5"
+shred = "0.7"
+specs = "0.11"

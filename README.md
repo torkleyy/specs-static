@@ -28,7 +28,7 @@ Please see [the basic example](examples/basic.rs).
 
 ### Required Rust version
 
-`1.21 stable`
+`1.24 stable`
 
 ## Features
 
