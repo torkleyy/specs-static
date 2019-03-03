@@ -13,14 +13,15 @@ extern crate derivative;
 extern crate hibitset;
 extern crate shred;
 extern crate specs;
+extern crate shrev;
 
 use std::hash::Hash;
 use std::marker::PhantomData;
 
 use hibitset::BitSet;
-use specs::storage::UnprotectedStorage;
-use specs::{Component, Join, World};
-
+use specs::storage::{UnprotectedStorage, ComponentEvent};
+use specs::{Component, Join, World, Tracked};
+use shrev::EventChannel;
 type Index = u32;
 
 /// The ids component storages are indexed with. This is mostly just a newtype wrapper with a `u32`
@@ -118,6 +119,15 @@ where
     }
 }
 
+impl<C, D, I> Tracked for Storage<C, D, I>
+    where D: Tracked + UnprotectedStorage<C>,
+          C: Component
+{
+    fn channel(&self) -> &EventChannel<ComponentEvent> { self.data.channel() }
+
+    fn channel_mut(&mut self) -> &mut EventChannel<ComponentEvent> { self.data.channel_mut() }
+}
+
 impl<C, D, I> Drop for Storage<C, D, I>
 where
     D: UnprotectedStorage<C>,
@@ -137,7 +147,7 @@ where
     type Value = &'a D;
     type Mask = &'a BitSet;
 
-    fn open(self) -> (Self::Mask, Self::Value) {
+    unsafe fn open(self) -> (Self::Mask, Self::Value) {
         (&self.bitset, &self.data)
     }
 
@@ -154,7 +164,7 @@ where
     type Value = &'a mut D;
     type Mask = &'a BitSet;
 
-    fn open(self) -> (Self::Mask, Self::Value) {
+    unsafe fn open(self) -> (Self::Mask, Self::Value) {
         (&self.bitset, &mut self.data)
     }
 
