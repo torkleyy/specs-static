@@ -18,7 +18,7 @@ travis-ci = { repository = "torkleyy/specs-static" }
 
 [dependencies]
 derivative = "1"
-hibitset = "0.5"
+hibitset = "0.6"
 shred = "0.7"
 specs = "0.14"
 shrev = "1.0"
